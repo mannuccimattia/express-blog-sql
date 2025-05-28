@@ -16,13 +16,13 @@ router.get("/", postsController.index);
 router.get("/:id", postsController.show);
 
 // store
-router.post("/", postsController.store);
+// router.post("/", postsController.store);
 
 // update
-router.put("/:id", postsController.update);
+// router.put("/:id", postsController.update);
 
 // modify
-router.patch("/:id", postsController.modify);
+// router.patch("/:id", postsController.modify);
 
 // delete
 router.delete("/:id", postsController.destroy);
