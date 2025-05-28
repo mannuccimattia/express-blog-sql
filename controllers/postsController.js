@@ -2,6 +2,7 @@
 const posts = require("../data/posts_arr.js");
 //importo il database
 const connection = require("../data/db.js");
+const { connect } = require("../routers/posts.js");
 
 // INDEX
 function index(req, res) {
@@ -163,28 +164,39 @@ function modify(req, res) {
 
 // DESTROY
 function destroy(req, res) {
-  // definisco id
   const id = parseInt(req.params.id);
 
-  // cerco il posts con id richiesto
-  const post = posts.find(post => post.id === id);
+  const sql = "DELETE FROM posts WHERE id = ?";
 
-  // se non trovo nessun post restituisco un 404 con un json di errore
-  if (!post) {
-    res.status(404);
+  connection.query(sql, [id], (err) => {
+    if (err) {
+      res.status(500).json({
+        error: "DB query failed: " + err
+      })
+    }
 
-    return res.json({
-      error: "Not Found",
-      message: "Post not found"
-    });
-  }
+    res.sendStatus(204);
+  })
 
-  // elimino l'elemento trovato
-  posts.splice(posts.indexOf(post), 1);
+  // // cerco il posts con id richiesto
+  // const post = posts.find(post => post.id === id);
 
-  // imposto lo stato della risposta
-  res.sendStatus(204);
-  console.log(`********************************\n`, posts)
+  // // se non trovo nessun post restituisco un 404 con un json di errore
+  // if (!post) {
+  //   res.status(404);
+
+  //   return res.json({
+  //     error: "Not Found",
+  //     message: "Post not found"
+  //   });
+  // }
+
+  // // elimino l'elemento trovato
+  // posts.splice(posts.indexOf(post), 1);
+
+  // // imposto lo stato della risposta
+  // res.sendStatus(204);
+  // console.log(`********************************\n`, posts)
 }
 
 // esporto un oggetto contentente le funzioni 
