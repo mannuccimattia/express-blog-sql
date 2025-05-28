@@ -13,7 +13,6 @@ function index(req, res) {
     if (err) return res.status(500).json({
       error: "DB query failed"
     })
-    console.log(results)
     res.json(results)
   })
 
@@ -53,12 +52,31 @@ function show(req, res) {
 
   const sql = "SELECT * FROM posts WHERE id = ?";
 
-  connection.query(sql, [id], (err, results) => {
+  const tagsSql = `
+  SELECT T.* 
+  FROM tags T 
+  JOIN post_tag PT 
+  ON T.id = PT.tag_id 
+  WHERE PT.post_id = ?
+  `
+
+  // query per il post con id richiesto
+  connection.query(sql, [id], (err, postsResult) => {
     if (err) { return res.status(500).json({ error: "Query failed: " + err }) };
+    if (postsResult.length === 0) {
+      return res.status(404).json({ error: "Post not Found" });
+    };
 
-    res.json(results);
+    const post = postsResult[0];
+
+    // query per la join dei tag del post con id richiesto
+    connection.query(tagsSql, [id], (err, tagsResult) => {
+      if (err) { return res.status(500).json({ error: "Query failed: " + err }) };
+
+      post.tags = tagsResult;
+      res.json(post)
+    })
   })
-
   // // cerco il post con l'id richiesto
   // const post = posts.find(post => post.id == id);
 
