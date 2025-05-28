@@ -1,0 +1,25 @@
+{
+  "name": "express-blog-api-crud",
+  "version": "1.0.0",
+  "description": "ESERCIZIO: Express Blog - API CRUD (parte 1)",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "watch": "node --watch app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mannuccimattia/express-blog-api-crud.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mannuccimattia/express-blog-api-crud/issues"
+  },
+  "homepage": "https://github.com/mannuccimattia/express-blog-api-crud#readme",
+  "dependencies": {
+    "express": "^5.1.0",
+    "mysql2": "^3.14.1"
+  }
+}
