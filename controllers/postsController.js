@@ -51,20 +51,28 @@ function show(req, res) {
   // definisco una variabile integer e le assegno il valore dell'id immesso nella richiesta
   const id = parseInt(req.params.id);
 
-  // cerco il post con l'id richiesto
-  const post = posts.find(post => post.id == id);
+  const sql = "SELECT * FROM posts WHERE id = ?";
 
-  // se non trovo nessun post restituisco un 404 con un json di errore
-  if (!post) {
-    res.status(404);
+  connection.query(sql, [id], (err, results) => {
+    if (err) { return res.status(500).json({ error: "Query failed: " + err }) };
 
-    return res.json({
-      error: "Not Found",
-      message: "Post not found"
-    });
-  }
-  // restituisco il post con l'id richiesto
-  return res.json(post);
+    res.json(results);
+  })
+
+  // // cerco il post con l'id richiesto
+  // const post = posts.find(post => post.id == id);
+
+  // // se non trovo nessun post restituisco un 404 con un json di errore
+  // if (!post) {
+  //   res.status(404);
+
+  //   return res.json({
+  //     error: "Not Found",
+  //     message: "Post not found"
+  //   });
+  // }
+  // // restituisco il post con l'id richiesto
+  // return res.json(post);
 }
 
 // STORE
